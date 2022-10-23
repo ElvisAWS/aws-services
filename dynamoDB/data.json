@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Loreal",
+        "id": 1,
+        "info":{
+            "age": 45,
+            "address": "one street",
+            "genger": "Male"
+        }
+
+    },
+    {
+        "name": "Maroon",
+        "id": 2,
+        "info":{
+            "age": 50,
+            "address": "two street",
+            "genger": "Female"
+        }
+
+    },
+    {
+        "name": "Darius",
+        "id": 3,
+        "info":{
+            "age": 30,
+            "address": "three street",
+            "genger": "Male"
+        }
+
+    },
+    {
+        "name": "Loreal",
+        "id": 4,
+        "info":{
+            "age": 45,
+            "address": "four street",
+            "genger": "Male"
+        }
+
+    }
+]
