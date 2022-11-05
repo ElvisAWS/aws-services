@@ -1,4 +1,6 @@
 
+
+
 # Some applications might need to perform many kinds of queries, using a variety of different attributes as 
 # query criteria. To support these requirements, you can create one or more global secondary indexes and issue 
 # Query requests against these indexes in Amazon DynamoDB.

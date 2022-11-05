@@ -21,16 +21,16 @@ def create_dax_table(dyn_resource=None):
     params = {
         'TableName': table_name,
         'KeySchema': [
-            {'AttributeName': 'name', 'KeyType': 'HASH'}, # partition_key
-            {'AttributeName': 'id', 'KeyType': 'RANGE'} # sort_key
+            {'AttributeName': 'id', 'KeyType': 'HASH'}, # partition_key
+            {'AttributeName': 'name', 'KeyType': 'RANGE'} # sort_key
         ],
         'AttributeDefinitions': [
             {'AttributeName': 'name', 'AttributeType': 'S'},
             {'AttributeName': 'id', 'AttributeType': 'N'}
         ],
         'ProvisionedThroughput': {
-            'ReadCapacityUnits': 10,
-            'WriteCapacityUnits': 10
+            'ReadCapacityUnits': 2,
+            'WriteCapacityUnits': 2
         }
     }
     table = dyn_resource.create_table(**params)

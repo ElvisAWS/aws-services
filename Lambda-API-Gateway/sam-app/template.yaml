@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+  Sample SAM Template for sam-app
+
+Globals:
+  Function:
+    Timeout: 5
+    MemorySize: 512
+    Runtime: python3.9
+    Architectures:
+      - x86_64
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler # lambda function
+      CodeUri: hello_world/.      # path to my lambda function
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /hello
+            Method: get
+  
+  EmployeeFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: employee.get_employee
+      CodeUri: employee/.     # path to my lambda function
+      Events:
+        EmployeeWorld:
+          Type: Api
+          Properties:
+            Path: /employee
+            Method: get
+  EmployeeCreateFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: employee.create_employee
+      CodeUri: employee/.   
+      Events:
+        EmployeeWorld:
+          Type: Api 
+          Properties:
+            Path: /employee
+            Method: put
+  EmployeeDeleteFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: employee.delete_employee
+      CodeUri: employee/.  
+      Events:
+        EmployeeWorld:
+          Type: Api 
+          Properties:
+            Path: /employee
+            Method: delete
+  EmployeePostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: employee.update_employee
+      CodeUri: employee/.    
+      Events:
+        EmployeeWorld:
+          Type: Api
+          Properties:
+            Path: /employee
+            Method: post
+  EmployeeProdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: employeeprod.employee_prod
+      CodeUri: employee/.    
+      Events:
+        EmployeeWorld:
+          Type: Api
+          Properties:
+            Path: /prod
+            Method: get
+  EmployeeTestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: employeetest.employee_test
+      CodeUri: employee/.    
+      Events:
+        EmployeeWorld:
+          Type: Api
+          Properties:
+            Path: /test
+            Method: get
+
+Outputs:
+  EmployeeApi:
+    Description: "API Gateway endpoint URL for Prod stage for Employee function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/employee/"
+  EmployeeFunction:
+    Description: "Employee Lambda Function ARN"
+    Value: !GetAtt EmployeeFunction.Arn
+  EmployeeFunctionIamRole:
+    Description: "Implicit IAM Role created for Employee function"
+    Value: !GetAtt EmployeeFunctionRole.Arn

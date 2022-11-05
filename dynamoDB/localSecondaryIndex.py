@@ -1,3 +1,5 @@
+
+
 # Some applications only need to query data using the base table’s primary key. However, there might be situations 
 # where an alternative sort key would be helpful. To give your application a choice of sort keys, you can create
 # one or more local secondary indexes on an Amazon DynamoDB table and issue Query or Scan requests against these 

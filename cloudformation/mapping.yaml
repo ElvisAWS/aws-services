@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a template with mappings
+Parameters:
+  Environment:
+    Description: Select your Environment
+    Type: String
+    AllowedValues: [QA,DEV,PROD]
+    Default: DEV
+Mappings:
+  mapEnv:
+    QA:
+      InstanceType: t2.micro
+    DEV:
+      InstanceType: t2.medium
+    PROD:
+      InstanceType: t2.larde
+
+Resources:
+  mapEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: subnet-0350ddc6b2ebab574
+      KeyName: 'Elvis-Server-Key-Pair'
+      ImageId: 'ami-0648ea225c13e0729'
+      InstanceType: !FindInMap [mapEnv, !Ref Environment, InstanceType]
+      Monitoring: false
+      Tags:
+        - Key: Name
+          Value: mapEC2Instance

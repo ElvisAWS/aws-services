@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This template will create security group and EC2 instance 
+Metadata: {
+  'Author': !Ref paramAuthorName
+}
+Parameters:
+  paramAuthorName:
+    Description: Owner of the template
+    Type: String
+    Default: 'Elvis Ngwesse'
+  paramAllowSSHFromRange:
+    Description: IP CidrBlock to allow SSH access
+    Type: String
+    Default: 0.0.0.0/0
+  paramAllowSSHAccess:
+    Description: Please select input true or false for ssh access
+    Type: String
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+
+Conditions:
+  AllowSSHAccess: !Equals [!Ref paramAllowSSHAccess, true]
+
+Resources:
+  secGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AllowAllTraffic
+      GroupDescription: Enable ssh and http traffic
+      VpcId: vpc-03f0332e8acde76e1
+      #VpcId: !ImportValue exportCustommyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref paramAllowSSHFromRange
+        - !If ['AllowSSHAccess',
+              {
+              'IpProtocol': tcp,
+              'FromPort': 22,
+              'ToPort': 22,
+              'CidrIp': !Ref paramAllowSSHFromRange
+              },{'!Ref':"AWS::NoValue"}]
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref paramAllowSSHFromRange
+      Tags:
+        - Key: Name
+          Value: secGroup  
+  ubuntuInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: subnet-0350ddc6b2ebab574
+      #SubnetId: !ImportValue  customPublicSubnet
+      KeyName: 'Elvis-Server-Key-Pair'
+      ImageId: 'ami-0648ea225c13e0729'
+      InstanceType: t2.micro
+      Monitoring: false
+      SecurityGroupIds: [!Ref secGroup]
+      UserData: !Base64 |
+        #!/bin/bash -ex
+        yum update -y
+        yum install -y httpd
+        systemctl start httpd
+        systemctl enable httpd
+        echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+      Tags:
+        - Key: Name
+          Value: ubuntuInstance
+    
+
+Outputs:
+  outputSecGroup:
+    Description: created secGroup
+    Value: !Ref secGroup
+    Export: 
+      Name: sshhttpecGroup
+  outputubuntuInstance:
+    Description: created ubuntuInstance
+    Value: !Ref ubuntuInstance
+    Export: 
+      Name: ubuntuInstance

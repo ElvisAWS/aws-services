@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a template with mappings
+Parameters:
+  InstanceTypeParameter:
+    Description: Select your Environment
+    Type: String
+    AllowedValues: [t2.micro,t2.medium,t2.large]
+    Default: t2.micro
+
+Resources:
+  mapEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: subnet-0350ddc6b2ebab574
+      KeyName: 'Elvis-Server-Key-Pair'
+      ImageId: 'ami-0648ea225c13e0729'
+      InstanceType: !Ref InstanceTypeParameter
+      Monitoring: false
+      UserData: 
+        Fn::Base64:
+          !Sub |
+          #!/bin/bash -ex
+          yum update -y
+          yum install -y docker-compose
+          mkdir /home/ubuntu/${AWS::Region}
+      Tags:
+        - Key: Name
+          Value: mapEC2Instance

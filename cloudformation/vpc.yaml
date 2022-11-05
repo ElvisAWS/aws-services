@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create custom VPC and Internet Gateway
+Resources: 
+  CustommyVPC:
+      Type: AWS::EC2::VPC
+      Properties:
+        CidrBlock: 10.0.0.0/24
+        EnableDnsSupport: true
+        Tags:
+          - Key: Name
+            Value: CustommyVPC
+  customInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: myInternetGateway
+  attachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref CustommyVPC
+      InternetGatewayId: !Ref customInternetGateway
+Outputs: 
+  outputcustomInternetGateway:
+    Description: A reference to created internet gateway
+    Value: !Ref customInternetGateway
+    Export: 
+      Name: customInternetGateway
+  outputattachGateway:
+    Description: A reference to created atached gateway
+    Value: !Ref attachGateway
+    Export: 
+      Name: attachGateway
+  outputCustommyVPC:
+      Description: A reference to the created vpc
+      Value: !Ref CustommyVPC
+      Export: 
+        Name: exportCustommyVPC
