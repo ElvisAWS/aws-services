@@ -1,11 +1,16 @@
 import json
 
 def employee_prod(event, context):
-    body = "Hello from Lambda! employee Prod"
+    request_body = {
+        'Hello from Lambda! employee Prod',
+         context.function_version,
+         context.aws_request_id,
+         context.invoked_function_arn
+    }
     statusCode = 200
     return {
         "statusCode": statusCode,
-        "body": json.dumps(body),
+        "body": json.dumps(request_body),
         "headers": {
             "Content-Type": "application/json"
         }
