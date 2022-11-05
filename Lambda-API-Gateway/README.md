@@ -29,6 +29,7 @@ Commands you can use next
 # Build a docker container
     # sam build
     # sam local start-api
+    # sam delete stack-name
 
 
 

@@ -3,27 +3,41 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
-            "name": "Invoke Lambda",
+            "name": "EmployeeProdFunction",
             "invokeTarget": {
-                "target": "code",
-                "lambdaHandler": "Function Handler",
-                "projectRoot": "${workspaceFolder}"
+                "target": "template",
+                "templatePath": "${workspaceFolder}/Lambda-API-Gateway/sam-app/template.yaml",
+                "logicalId": "EmployeeProdFunction"
             },
             "lambda": {
-                "runtime": "Lambda Runtime",
-                "payload": {
-                    "json": {}
-                }
+                "payload": {},
+                "environmentVariables": {}
             }
         },
         {
             "type": "aws-sam",
             "request": "direct-invoke",
-            "name": "build:EmployeeFunction",
+            "name": "EmployeeCreateFunction",
             "invokeTarget": {
                 "target": "template",
-                "templatePath": "${workspaceFolder}/SAM/sam-app/.aws-sam/build/template.yaml",
-                "logicalId": "EmployeeFunction"
+                "templatePath": "${workspaceFolder}/Lambda-API-Gateway/sam-app/template.yaml",
+                "logicalId": "EmployeeCreateFunction"
+            },
+            "lambda": {
+                "payload": {
+                    "path": "Lambda-API-Gateway/sam-app/pay_load.json"
+                },
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "EmployeeTestFunction",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/Lambda-API-Gateway/sam-app/template.yaml",
+                "logicalId": "EmployeeTestFunction"
             },
             "lambda": {
                 "payload": {},
