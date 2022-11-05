@@ -10,7 +10,7 @@ def employee_prod(event, context):
     statusCode = 200
     return {
         "statusCode": statusCode,
-        "body": json.dumps(list(request_body)),
+        "body": json.dumps(request_body),
         "headers": {
             "Content-Type": "application/json"
         }
